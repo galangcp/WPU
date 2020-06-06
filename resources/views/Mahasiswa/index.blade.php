@@ -53,13 +53,17 @@
                                     <td>{{$mhs->no_hp}}</td>
                                     <td>
                                         <a href="/mahasiswa/{{$mhs->id_mahasiswa}}/edit" class="btn btn-warning btn-sm">Edit</a>
-                                        <a href="/mahasiswa/{{$mhs->id_mahasiswa}}/delete" class="btn btn-danger btn-sm">Hapus</a>
+                                        <a href="/mahasiswa/{{$mhs->id_mahasiswa}}/delete" class="btn btn-danger btn-sm" onclick="return confirm('Yakin mau dihapus ?')">Hapus</a>
                                     </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                         {{$mahasiswa->links()}}
+                        <div class="">
+                            <a href="/mahasiswa/export" class="btn btn-sm btn-primary">Export</a>
+                            <a href="/mahasiswa/exportPDF" class="btn btn-sm btn-primary">PDF</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,17 +84,23 @@
             <div class="modal-body">
                 <form action="/mahasiswa/create" method="POST">
                     {{csrf_field()}}
-                    <div class="form-group">
+                    <div class="form-group{{$errors->has('nama') ? ' has-error' : ''}}">
                         <label for="exampleInputEmail1">Nama</label>
-                        <input name="nama" type="text" class="form-control" id="exampleInputEmail1" placeholder="Nama">
+                        <input name="nama" type="text" class="form-control" id="exampleInputEmail1" placeholder="Nama" value="{{old('nama')}}">
+                        @if($errors->has('nama'))
+                        <span class="help-block">{{$errors->first('nama')}}</span>
+                        @endif
                     </div>
-                    <div class="form-group">
+                    <div class="form-group{{$errors->has('alamat') ? ' has-error' : ''}}">
                         <label for="exampleInputEmail1">Alamat</label>
-                        <input name="alamat" type="text" class="form-control" id="exampleInputEmail1" placeholder="Alamat">
+                        <input name="alamat" type="text" class="form-control" id="exampleInputEmail1" placeholder="Alamat" value="{{old('alamat')}}">
+                        @if($errors->has('alamat'))
+                        <span class="help-block">{{$errors->first('alamat')}}</span>
+                        @endif
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">No_HP</label>
-                        <input name="no_hp" type="text" class="form-control" id="exampleInputPassword1" placeholder="No_HP">
+                        <input name="no_hp" type="text" class="form-control" id="exampleInputPassword1" placeholder="No_HP" value="{{old('no_hp')}}">
                     </div>
             </div>
             <div class="modal-footer">

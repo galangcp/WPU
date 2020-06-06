@@ -20,6 +20,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/mahasiswa/{id_mahasiswa}/edit', 'MahasiswaController@edit');
     Route::post('/mahasiswa/{id_mahasiswa}/update', 'MahasiswaController@update');
     Route::get('/mahasiswa/{id_mahasiswa}/delete', 'MahasiswaController@destroy');
+    Route::get('/mahasiswa/export', 'MahasiswaController@export');
+    Route::get('/mahasiswa/exportPDF', 'MahasiswaController@exportPDF');
     //Route::get('/', 'UserController@index');
     Route::get('/', function () {
         return view('layouts.master');

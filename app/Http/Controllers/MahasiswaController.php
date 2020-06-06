@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Mahasiswa;
+use App\Exports\MahasiswaExport;
+use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 class MahasiswaController extends Controller
 {
@@ -29,6 +32,10 @@ class MahasiswaController extends Controller
      */
     public function create(Request $request)
     {
+        $this->validate($request, [
+            'nama' => 'required|min:3',
+            'alamat' => 'required'
+        ]);
         Mahasiswa::create($request->all());
         return redirect('/mahasiswa')->with('sukses', 'data berhasil diinput');
     }
@@ -92,5 +99,17 @@ class MahasiswaController extends Controller
         $mahasiswa = Mahasiswa::find($id_mahasiswa);
         $mahasiswa->delete($mahasiswa);
         return redirect('/mahasiswa')->with('sukses', 'Data berhasil dihapus');
+    }
+
+    public function export()
+    {
+        return Excel::download(new MahasiswaExport, 'mahasiswa.xlsx');
+    }
+
+    public function exportPDF()
+    {
+        $Mahasiswa = Mahasiswa::all();
+        $pdf = PDF::loadview('mahasiswa.mahasiswapdf', ['mahasiswa' => $Mahasiswa]);
+        return $pdf->download('mahasiswa.pdf');
     }
 }
